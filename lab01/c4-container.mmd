@@ -1,0 +1,30 @@
+flowchart TB
+    analyst["Analyst<br/>[Person]<br/>head office"]:::person
+    manager["Branch manager<br/>[Person]<br/>PNH, REP, BTB"]:::person
+    pos["Branch POS systems<br/>[External system, x3]"]:::external
+    mail["E-mail service<br/>[External system]"]:::external
+
+    subgraph boundary["Monthly Sales Report System"]
+        ingest["Ingest Job<br/>[Java 25 Main]r<br/>loads & validates CSVs"]:::container
+        landing["Landing Zone<br/>[File System folder]<br/>data/<month>/"]:::container
+        store["Report Store<br/>[File System / DB]<br/>stores monthly summaries"]:::container
+        engine["Report Engine<br/>[Java 25 Library]<br/>computes metrics & anomalies"]:::container
+        javafx["JavaFX Viewer<br/>[Desktop App]<br/>head-office analyst UI"]:::container
+        web["Web Report Page<br/>[HTML / HTTP server]<br/>branch manager view"]:::container
+    end
+
+    analyst -- "HTTPS" --> javafx
+    manager -- "HTTPS" --> web
+    pos -- "SFTP" --> landing
+    ingest -- "file system" --> landing
+    ingest -- "in-process call" --> engine
+    engine -- "file system" --> store
+    javafx -- "in-process call" --> engine
+    web -- "HTTP" --> engine
+    engine -- "SMTP" --> mail
+
+    style boundary fill:none,stroke:#000000,stroke-dasharray:5 5
+
+    classDef person fill:#08427b,color:#ffffff,stroke:#052e56
+    classDef container fill:#1168bd,color:#ffffff,stroke:#0b4884
+    classDef external fill:#8a8a8a,color:#ffffff,stroke:#6b6b6b
