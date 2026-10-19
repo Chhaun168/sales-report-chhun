@@ -18,8 +18,8 @@ public final class CsvTransactionParser implements TransactionParser {
 
     private static final Set<String> BRANCHES = Set.of("PNH", "REP", "BTB");
     private static final Set<String> CATEGORIES = Set.of(
-            "Grocery", "Fresh Produce", "Beverages", "Household", "Personal Care", "Bakery"
-    );
+        "Grocery", "Fresh Produce", "Beverages", "Household", "Personal Care", "Bakery", "Stationery", "Electronics"
+);
 
     @Override
     public SaleTransaction parse(String line) throws InvalidRowException {

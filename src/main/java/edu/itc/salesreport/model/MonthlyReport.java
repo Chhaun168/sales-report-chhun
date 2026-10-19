@@ -7,11 +7,12 @@ import java.util.Objects;
 
 public record MonthlyReport(
         YearMonth month, int receipts, BigDecimal revenue,
-        Map<String, BranchSummary> branches) {
+        Map<String, BranchSummary> branches, BranchSummary chain) {
 
     public MonthlyReport {
         Objects.requireNonNull(month, "month");
         Objects.requireNonNull(revenue, "revenue");
         branches = Map.copyOf(Objects.requireNonNull(branches, "branches"));
+        Objects.requireNonNull(chain, "chain");
     }
 }
